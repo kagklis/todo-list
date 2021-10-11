@@ -1,2 +1,2 @@
-# TodoList
-A small CRUD application for to-do items.
+# TO-DO List
+A small to-do list application.
