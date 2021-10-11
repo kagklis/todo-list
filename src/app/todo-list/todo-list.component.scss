@@ -1,0 +1,74 @@
+@import "../../css/responsive-breakpoints.scss";
+
+.title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 300;
+  text-align: center;
+}
+
+.container {
+  max-width: 400px;
+  margin: auto;
+}
+
+.pad-top {
+  padding-top: 20%;
+
+  @include mobile-only {
+    padding-top: 10%;
+  }
+}
+
+.todo-list-container {
+  min-height: 380px;
+}
+
+.nothing-found-container {
+  display: flex;
+  min-height: 380px;
+}
+
+.spinner-container {
+  display: flex;
+  min-height: 380px;
+}
+
+.todo-list-controls {
+  display: flex;
+  align-items: center;
+  margin: 5px;
+}
+
+.search-controls {
+  display: flex;
+  flex-direction: row;
+}
+
+.search-field {
+  width: 80%;
+  margin-right: 10px;
+}
+
+.reset-button {
+  color: #444;
+
+  :disabled {
+    color: #bbb;
+  }
+}
+
+.not-found-icon {
+  font-size: 150px;
+  width: 100%;
+  text-align: center;
+}
+
+.spinner {
+  margin: auto;
+}
+
+mat-paginator {
+  background: transparent;
+  position: relative;
+}

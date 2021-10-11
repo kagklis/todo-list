@@ -1,0 +1,40 @@
+.mat-form-field-appearance-outline .mat-form-field-wrapper {
+  width: 100%;
+  background: white;
+  padding-bottom: 0px !important;
+  margin: 0.35em 0 0.25em 0;
+  border: 1px solid $borders-dividers;
+  border-radius: 6px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 0.55em 0;
+  border-top: 5px solid transparent;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-flex {
+  padding: 0 0.75em 0 1em !important;
+}
+
+.mat-paginator-outer-container {
+  flex-direction: column;
+  align-items: self-end;
+}
+
+.mat-checkbox-layout {
+  width: 100%;
+  display: flex !important;
+  flex-direction: row;
+  align-items: center !important;
+}
+
+.mat-checkbox-inner-container {
+  margin: 0px 15px 0px 5px !important;
+
+  @include mobile-only {
+    margin: 0px 10px 0px 5px !important;
+  }
+}

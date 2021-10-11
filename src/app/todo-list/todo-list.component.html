@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="pad-top">
+    <h1 class="title">TO-DO LIST</h1>
+    <div class="todo-list-controls">
+      <mat-form-field class="search-field" appearance="outline">
+        <input #search matInput type="text" placeholder="Search by title" [ngModel]="searchText$ | async"
+          (ngModelChange)="searchTextChanged($event)" />
+
+        <div class="search-controls">
+          <button mat-button matSuffix mat-icon-button [disabled]="!search.value" class="reset-button"
+            (click)="resetSearch()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </mat-form-field>
+      <button mat-fab (click)="addTodoItem()" color="primary">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="!(isLoading$ | async)">
+    <div *ngIf="items.length" class="todo-list-container">
+      <app-todo-item *ngFor="let item of data; trackBy: trackByItems" [item]="item" (deleteItem)="deleteItem($event)"
+        (completeEdit)="completeEdit($event)" (cancelEdit)="cancelEdit($event)"></app-todo-item>
+    </div>
+    <div *ngIf="!items.length" class="nothing-found-container">
+      <div class="container">
+        <mat-icon class="not-found-icon" aria-hidden="false">search_off</mat-icon>
+        <p class="title">Nothing Found!</p>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="(isLoading$ | async)" class="spinner-container">
+    <mat-spinner strokeWidth="3" [diameter]="120" class="spinner"></mat-spinner>
+  </div>
+  <mat-paginator *ngIf="data" #paginator [length]="todoListLength" [pageSize]="pageSize" [pageIndex]="currentPage"
+    (page)="pageChanged($event)" showFirstLastButtons="true">
+  </mat-paginator>
+</div>

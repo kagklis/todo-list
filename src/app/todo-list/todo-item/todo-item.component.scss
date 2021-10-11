@@ -1,0 +1,64 @@
+@import "../../../css/variables.scss";
+@import "../../../css/responsive-breakpoints.scss";
+
+.completed {
+  text-decoration: line-through;
+  color: grey;
+}
+
+.todo-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  border: 1px solid $borders-dividers;
+  padding: 8px;
+  margin: 5px;
+  font-weight: 300;
+  background: white;
+  border-radius: 5px;
+}
+
+.todo-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.todo-checkbox {
+  display: flex;
+  min-width: 70%;
+  @include xs-screen {
+    min-width: 65%;
+  }
+}
+
+.todo-checkbox-edit {
+  display: flex;
+  min-width: 10%;
+}
+
+.todo-label {
+  white-space: normal;
+}
+
+.todo-input-container {
+  min-width: 55%;
+  margin-right: 5%;
+  @include xs-screen {
+    min-width: 50%;
+  }
+}
+
+.todo-input {
+  width: 100%;
+}
+
+.todo-actions-container {
+  min-width: 30%;
+  @include xs-screen {
+    min-width: 35%;
+  }
+}
