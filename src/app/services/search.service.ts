@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { TodoItem } from '../model/todo-item';
 import { SpinnerService } from './spinner.service';
@@ -10,7 +10,7 @@ import { TodoService } from './todo.service';
 })
 export class SearchService {
 
-  private searchTextSubject: Subject<string> = new Subject<string>();
+  private searchTextSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
   searchText$: Observable<string> = this.searchTextSubject.asObservable();
 
   constructor(private spinnerService: SpinnerService,

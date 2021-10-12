@@ -1,13 +1,12 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { TodoService } from 'src/app/services/todo.service';
-import { MaterialModule } from 'src/app/shared/material.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { TodoItemComponent } from './todo-item.component';
 
 describe('TodoItemComponent', () => {
@@ -22,8 +21,7 @@ describe('TodoItemComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        FormsModule,
-        MaterialModule
+        SharedModule
       ],
       declarations: [TodoItemComponent],
       providers: [
@@ -75,10 +73,8 @@ describe('TodoItemComponent', () => {
   it('should change tempTitle for new items when typing', () => {
     component.item = { id: 0, title: 'Sample to-do item.', completed: false, editing: true };
     fixture.detectChanges();
-    component.ngOnInit();
-    fixture.detectChanges();
-
     const input: HTMLInputElement = de.query(By.css('input.todo-input')).nativeElement;
+
     input.value = 'New value';
     input.dispatchEvent(new Event('input'));
 
@@ -139,8 +135,6 @@ describe('TodoItemComponent', () => {
     beforeEach(() => {
       component.item = { id: 1, title: 'Sample to-do item.', completed: false, editing: true };
       fixture.detectChanges();
-      component.ngOnInit();
-      fixture.detectChanges();
       checkButton = de.queryAll(By.css('button'))[0].nativeElement;
     });
 
@@ -180,8 +174,6 @@ describe('TodoItemComponent', () => {
     let cancelButton: HTMLElement;
     beforeEach(() => {
       component.item = { id: 1, title: 'Sample to-do item.', completed: false, editing: true };
-      fixture.detectChanges();
-      component.ngOnInit();
       fixture.detectChanges();
       cancelButton = de.queryAll(By.css('button'))[1].nativeElement;
     });

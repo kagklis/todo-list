@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { AutofocusFixModule } from 'ngx-autofocus-fix';
 
 import { TodoListComponent } from './todo-list.component';
 import { TodoItemComponent } from './todo-item/todo-item.component';
 
-import { MaterialModule } from '../shared/material.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -14,10 +12,8 @@ import { MaterialModule } from '../shared/material.module';
     TodoListComponent
   ],
   imports: [
-    CommonModule,
-    FormsModule,
     AutofocusFixModule.forRoot(),
-    MaterialModule
+    SharedModule
   ],
   exports: [
     TodoListComponent

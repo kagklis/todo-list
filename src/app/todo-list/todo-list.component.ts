@@ -37,24 +37,16 @@ export class TodoListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.spinnerService.loading();
-    this.todoService.getTodoItems().subscribe((items: TodoItem[]) => {
-      this.updateDataAndStopSpinner(items);
-    });
-
     this.sub = this.searchService.searchResults$.subscribe((items: TodoItem[]) => {
-      this.updateDataAndStopSpinner(items);
+      this.items = items;
+      this.todoListLength = items.length;
+      this.data = items.slice(this.start, this.end);
+      this.spinnerService.complete();
     });
   }
 
   ngOnDestroy(): void {
-    this.sub?.unsubscribe();
-  }
-
-  private updateDataAndStopSpinner(items: TodoItem[]) {
-    this.items = items;
-    this.todoListLength = items.length;
-    this.data = items.slice(this.start, this.end);
-    this.spinnerService.complete();
+    this.sub.unsubscribe();
   }
 
   addTodoItem(): void {
