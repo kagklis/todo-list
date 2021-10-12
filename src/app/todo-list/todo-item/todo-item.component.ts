@@ -26,35 +26,38 @@ export class TodoItemComponent implements OnInit {
 
   constructor(private todoService: TodoService) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.tempTitle = this.item.title;
+  }
 
   toggle(item: TodoItem): void {
+    item.completed = !item.completed;
     if (item.id === 0) return;
     this.todoService.updateTodoItem(item).subscribe();
   }
 
-  titleChanged(title: string, item: TodoItem) {
-    if (item.id === 0) {
-      item.title = title;
+  onTitleChange() {
+    if (this.item.id === 0) {
+      this.item.title = this.tempTitle;
     }
-    this.tempTitle = title;
   }
 
   deleteTodoItem(id: number) {
     this.deleteItem.emit(id);
   }
 
-  editTodoItem(item: TodoItem): void {
+  startItemEdit(item: TodoItem): void {
     item.editing = true;
   }
 
   completeItemEdit(item: TodoItem): void {
     item.title = this.tempTitle;
+    item.editing = false;
     this.completeEdit.emit(item);
-    this.tempTitle = '';
   }
 
   cancelItemEdit(item: TodoItem) {
+    this.tempTitle = item.title;
     item.editing = false;
     this.cancelEdit.emit(item.id);
   }

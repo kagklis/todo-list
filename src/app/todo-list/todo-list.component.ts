@@ -41,13 +41,13 @@ export class TodoListComponent implements OnInit, OnDestroy {
       this.updateDataAndStopSpinner(items);
     });
 
-    this.sub = this.searchService.getSearchResults().subscribe((items: TodoItem[]) => {
+    this.sub = this.searchService.searchResults$.subscribe((items: TodoItem[]) => {
       this.updateDataAndStopSpinner(items);
     });
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    this.sub?.unsubscribe();
   }
 
   private updateDataAndStopSpinner(items: TodoItem[]) {

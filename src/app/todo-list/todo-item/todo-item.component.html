@@ -1,13 +1,13 @@
 <div class="todo-item">
 
-  <mat-checkbox [(ngModel)]="item.completed" [ngClass]="!item.editing ? 'todo-checkbox' : 'todo-checkbox-edit'"
-    [checked]="item.completed" (change)="toggle(item)">
+  <mat-checkbox [checked]="item.completed" (change)="toggle(item)"
+    [ngClass]="!item.editing ? 'todo-checkbox' : 'todo-checkbox-edit'">
     <mat-label *ngIf="!item.editing" class="todo-label" [ngClass]="{ 'completed' : item.completed }">{{ item.title }}
     </mat-label>
   </mat-checkbox>
 
   <div *ngIf="item.editing" class="todo-input-container">
-    <input [ngModel]="item.title" (ngModelChange)="titleChanged($event, item)" class="todo-input" style="resize: none;"
+    <input [(ngModel)]="tempTitle" (ngModelChange)="onTitleChange()" class="todo-input" style="resize: none;"
       [autofocus]="item.editing" maxlength="50" (keyup.enter)="completeItemEdit(item)">
   </div>
 
@@ -25,7 +25,7 @@
 
     <!-- Actions in view mode -->
     <div *ngIf="!item.editing" class="todo-actions">
-      <button (click)="editTodoItem(item)" mat-mini-fab color="primary">
+      <button (click)="startItemEdit(item)" mat-mini-fab color="primary">
         <mat-icon>edit</mat-icon>
       </button>
       <button (click)="deleteTodoItem(item.id)" mat-mini-fab color="primary">

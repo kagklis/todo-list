@@ -16,21 +16,19 @@ export class SearchService {
   constructor(private spinnerService: SpinnerService,
     private todoService: TodoService) { }
 
+  searchResults$: Observable<TodoItem[]> = this.searchText$.pipe(
+    debounceTime(750),
+    distinctUntilChanged(),
+    tap(() => this.spinnerService.loading()),
+    switchMap((searchText: string) => {
+      return (searchText != '') ?
+        this.todoService.getTodoItemsByTitle(searchText) :
+        this.todoService.getTodoItems();
+    })
+  );
+
   search(searchText: string): void {
     this.searchTextSubject.next(searchText);
-  }
-
-  getSearchResults(): Observable<TodoItem[]> {
-    return this.searchText$.pipe(
-      debounceTime(750),
-      distinctUntilChanged(),
-      tap(() => this.spinnerService.loading()),
-      switchMap((searchText: string) =>
-        (searchText != '') ?
-          this.todoService.getTodoItemsByTitle(searchText) :
-          this.todoService.getTodoItems()
-      )
-    );
   }
 
   reset() {
