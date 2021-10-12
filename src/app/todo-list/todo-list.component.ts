@@ -19,13 +19,9 @@ export class TodoListComponent implements OnInit, OnDestroy {
   isLoading$: Observable<boolean>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  pageEvent!: PageEvent;
 
-  todoListLength: number = 0;
   pageSize: number = 6;
   currentPage: number = 0;
-  start: number = 0;
-  end: number = this.pageSize;
   sub!: Subscription;
 
   constructor(private spinnerService: SpinnerService,
@@ -39,10 +35,16 @@ export class TodoListComponent implements OnInit, OnDestroy {
     this.spinnerService.loading();
     this.sub = this.searchService.searchResults$.subscribe((items: TodoItem[]) => {
       this.items = items;
-      this.todoListLength = items.length;
-      this.data = items.slice(this.start, this.end);
+      this.currentPage = 0;
+      this.updateDataSlice();
       this.spinnerService.complete();
     });
+  }
+
+  private updateDataSlice() {
+    const startIndex = this.currentPage * this.pageSize;
+    const endIndex = (this.currentPage + 1) * this.pageSize;
+    this.data = this.items.slice(startIndex, endIndex);
   }
 
   ngOnDestroy(): void {
@@ -62,7 +64,6 @@ export class TodoListComponent implements OnInit, OnDestroy {
       completed: false,
       editing: true
     });
-    this.todoListLength = this.items.length;
     this.goToLastPage();
   }
 
@@ -107,7 +108,6 @@ export class TodoListComponent implements OnInit, OnDestroy {
       !!newItem ?
         this.items.splice(index, 1, newItem) :
         this.items.splice(index, 1);
-      this.todoListLength = this.items.length;
     }
     this.updateDataSlice();
   }
@@ -123,25 +123,18 @@ export class TodoListComponent implements OnInit, OnDestroy {
   trackByItems(_index: number, item: TodoItem): number { return item.id; }
 
   pageChanged(event: PageEvent) {
-    this.pageEvent = event;
-    this.currentPage = this.pageEvent.pageIndex;
+    this.currentPage = event.pageIndex;
     this.updateDataSlice();
-  }
-
-  private updateDataSlice() {
-    this.start = this.currentPage * this.pageSize;
-    this.end = (this.currentPage + 1) * this.pageSize;
-    this.data = this.items.slice(this.start, this.end);
   }
 
   private goToLastPage() {
     this.paginator.lastPage();
-    this.currentPage = Math.ceil(this.todoListLength / this.pageSize) - 1;
+    this.currentPage = Math.ceil(this.items.length / this.pageSize) - 1;
     this.updateDataSlice();
   }
 
   private fallbackToPreviousPage() {
-    if (this.todoListLength % this.pageSize === 0 &&
+    if (this.items.length % this.pageSize === 0 &&
       this.currentPage === (this.paginator.getNumberOfPages() - 1)) {
       this.paginator.previousPage();
     }

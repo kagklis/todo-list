@@ -34,7 +34,7 @@
   <div *ngIf="(isLoading$ | async)" class="spinner-container">
     <mat-spinner strokeWidth="3" [diameter]="120" class="spinner"></mat-spinner>
   </div>
-  <mat-paginator *ngIf="data" #paginator [length]="todoListLength" [pageSize]="pageSize" [pageIndex]="currentPage"
+  <mat-paginator *ngIf="data" #paginator [length]="items?.length ?? 0" [pageSize]="pageSize" [pageIndex]="currentPage"
     (page)="pageChanged($event)" showFirstLastButtons="true">
   </mat-paginator>
 </div>
