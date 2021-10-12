@@ -1,0 +1,34 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "title": "Walk the dog.",
+      "completed": true
+    },
+    {
+      "id": 2,
+      "title": "Go to the supermarket.",
+      "completed": false
+    },
+    {
+      "id": 3,
+      "title": "Do the dishes.",
+      "completed": true
+    },
+    {
+      "id": 4,
+      "title": "Write some code.",
+      "completed": false
+    },
+    {
+      "id": 5,
+      "title": "Aerobic!!!",
+      "completed": false
+    },
+    {
+      "id": 6,
+      "title": "Watch Netflix!",
+      "completed": false
+    }
+  ]
+}
