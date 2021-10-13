@@ -20,11 +20,11 @@
   </div>
 
   <div *ngIf="!(isLoading$ | async)">
-    <div *ngIf="items.length" class="todo-list-container">
-      <app-todo-item *ngFor="let item of data; trackBy: trackByItems" [item]="item" (deleteItem)="deleteItem($event)"
+    <div *ngIf="pagedTodoList.length" class="todo-list-container">
+      <app-todo-item *ngFor="let item of pagedTodoList.pageData; trackBy: trackByItems" [item]="item" (deleteItem)="deleteItem($event)"
         (completeEdit)="completeEdit($event)" (cancelEdit)="cancelEdit($event)"></app-todo-item>
     </div>
-    <div *ngIf="!items.length" class="nothing-found-container">
+    <div *ngIf="!pagedTodoList.length" class="nothing-found-container">
       <div class="container">
         <mat-icon class="not-found-icon" aria-hidden="false">search_off</mat-icon>
         <p class="title">Nothing Found!</p>
@@ -34,7 +34,7 @@
   <div *ngIf="(isLoading$ | async)" class="spinner-container">
     <mat-spinner strokeWidth="3" [diameter]="120" class="spinner"></mat-spinner>
   </div>
-  <mat-paginator *ngIf="data" #paginator [length]="items?.length ?? 0" [pageSize]="pageSize" [pageIndex]="currentPage"
+  <mat-paginator *ngIf="pagedTodoList.pageData" #paginator [length]="pagedTodoList.length" [pageSize]="pagedTodoList.pageSize" [pageIndex]="pagedTodoList.currentPage"
     (page)="pageChanged($event)" showFirstLastButtons="true">
   </mat-paginator>
 </div>

@@ -73,7 +73,7 @@ describe('TodoListComponent', () => {
     fixture.detectChanges();
 
     expect(de.queryAll(By.directive(TodoItemComponent)).length).toBe(ITEMS.length + 1);
-    expect(component.items.length).toBe(ITEMS.length + 1);
+    expect(component.pagedTodoList.length).toBe(ITEMS.length + 1);
   });
 
   it('should remove a todo item when delete button is pressed', () => {
@@ -84,7 +84,7 @@ describe('TodoListComponent', () => {
     fixture.detectChanges();
 
     expect(de.queryAll(By.directive(TodoItemComponent)).length).toBe(ITEMS.length - 1);
-    expect(component.items.length).toBe(ITEMS.length - 1);
+    expect(component.pagedTodoList.length).toBe(ITEMS.length - 1);
   });
 
 });

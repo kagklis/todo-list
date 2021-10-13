@@ -1,6 +1,7 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { iif, Observable, Subscription } from 'rxjs';
+import { PagedTodoList } from '../model/paged-todo-list';
 import { TodoItem } from '../model/todo-item';
 import { SearchService } from '../services/search.service';
 import { SpinnerService } from '../services/spinner.service';
@@ -13,15 +14,9 @@ import { TodoService } from '../services/todo.service';
 })
 export class TodoListComponent implements OnInit, OnDestroy {
 
-  data: TodoItem[] = [];
-  items: TodoItem[] = [];
+  pagedTodoList: PagedTodoList = new PagedTodoList();
   searchText$: Observable<string>;
   isLoading$: Observable<boolean>;
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  pageSize: number = 6;
-  currentPage: number = 0;
   sub!: Subscription;
 
   constructor(private spinnerService: SpinnerService,
@@ -34,17 +29,9 @@ export class TodoListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.spinnerService.loading();
     this.sub = this.searchService.searchResults$.subscribe((items: TodoItem[]) => {
-      this.items = items;
-      this.currentPage = 0;
-      this.updateDataSlice();
+      this.pagedTodoList = new PagedTodoList(items);
       this.spinnerService.complete();
     });
-  }
-
-  private updateDataSlice() {
-    const startIndex = this.currentPage * this.pageSize;
-    const endIndex = (this.currentPage + 1) * this.pageSize;
-    this.data = this.items.slice(startIndex, endIndex);
   }
 
   ngOnDestroy(): void {
@@ -52,64 +39,36 @@ export class TodoListComponent implements OnInit, OnDestroy {
   }
 
   addTodoItem(): void {
-    const emptyTodoExists = this.items?.some(item => item.id === 0);
-    if (emptyTodoExists) {
-      this.goToLastPage();
-      return;
-    }
-
-    this.items?.push({
-      id: 0,
-      title: '',
-      completed: false,
-      editing: true
-    });
-    this.goToLastPage();
+    this.pagedTodoList.addEmptyItem();
   }
 
   completeEdit(item: TodoItem) {
     this.spinnerService.loading();
-    const itemId = item.id;
-    iif(() => itemId === 0,
+    iif(() => item.id === 0,
       this.todoService.createTodoItem(item),
       this.todoService.updateTodoItem(item)
     ).subscribe((savedItem: TodoItem) => {
-      this.replaceTodoItem(itemId, { ...savedItem, editing: false });
+      this.pagedTodoList.replaceItem(item, savedItem);
       this.spinnerService.complete();
     });
   }
 
   cancelEdit(id: number) {
     if (id === 0) {
-      this.removeTodoItem(id);
+      this.pagedTodoList.removeItemById(id);
     }
   }
 
   deleteItem(id: number) {
     if (id === 0) {
-      this.removeTodoItem(id);
+      this.pagedTodoList.removeItemById(id);
       return;
     }
     this.spinnerService.loading();
     this.todoService.deleteTodoItem(id).subscribe(() => {
-      this.removeTodoItem(id);
+      this.pagedTodoList.removeItemById(id);
       this.spinnerService.complete();
     });
-  }
-
-  private removeTodoItem(id: number) {
-    this.replaceTodoItem(id, null);
-    this.fallbackToPreviousPage();
-  }
-
-  private replaceTodoItem(id: number, newItem: TodoItem | null) {
-    const index = this.items.findIndex(item => item.id == id);
-    if (index > -1) {
-      !!newItem ?
-        this.items.splice(index, 1, newItem) :
-        this.items.splice(index, 1);
-    }
-    this.updateDataSlice();
   }
 
   searchTextChanged(searchText: string) {
@@ -123,21 +82,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   trackByItems(_index: number, item: TodoItem): number { return item.id; }
 
   pageChanged(event: PageEvent) {
-    this.currentPage = event.pageIndex;
-    this.updateDataSlice();
-  }
-
-  private goToLastPage() {
-    this.paginator.lastPage();
-    this.currentPage = Math.ceil(this.items.length / this.pageSize) - 1;
-    this.updateDataSlice();
-  }
-
-  private fallbackToPreviousPage() {
-    if (this.items.length % this.pageSize === 0 &&
-      this.currentPage === (this.paginator.getNumberOfPages() - 1)) {
-      this.paginator.previousPage();
-    }
+    this.pagedTodoList.goToPage(event.pageIndex);
   }
 
 }
