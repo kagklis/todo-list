@@ -1,0 +1,8 @@
+{
+  "/api/*": {
+    "target": "https://my-json-server.typicode.com/kagklis/todo-list/todos",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}
