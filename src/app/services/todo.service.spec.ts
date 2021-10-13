@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { TodoService } from './todo.service';
 
 describe('TodoService', () => {
+  const URL: string = 'https://my-json-server.typicode.com/kagklis/todo-list/todos';
   let service: TodoService;
   let httpTestingController: HttpTestingController;
 
@@ -27,7 +28,7 @@ describe('TodoService', () => {
   it('should get todo items by title using the correct URL', () => {
     service.getTodoItemsByTitle(TEST_ITEM.title).subscribe();
 
-    const req = httpTestingController.expectOne(`api/todos?title=${TEST_ITEM.title}`);
+    const req = httpTestingController.expectOne(`${URL}?title=${TEST_ITEM.title}`);
 
     req.flush([{ ...TEST_ITEM }]);
     expect(req.request.method).toBe('GET');
@@ -37,7 +38,7 @@ describe('TodoService', () => {
   it('should post with the correct URL', () => {
     service.createTodoItem(TEST_ITEM).subscribe();
 
-    const req = httpTestingController.expectOne('api/todos');
+    const req = httpTestingController.expectOne(URL);
 
     req.flush({ ...TEST_ITEM });
     expect(req.request.method).toBe('POST');
@@ -47,7 +48,7 @@ describe('TodoService', () => {
   it('should delete with the correct URL', () => {
     service.deleteTodoItem(TEST_ITEM.id).subscribe();
 
-    const req = httpTestingController.expectOne(`api/todos/${TEST_ITEM.id}`);
+    const req = httpTestingController.expectOne(`${URL}/${TEST_ITEM.id}`);
 
     req.flush({});
     expect(req.request.method).toBe('DELETE');

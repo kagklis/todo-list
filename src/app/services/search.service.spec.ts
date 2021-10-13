@@ -6,6 +6,7 @@ import { SearchService } from './search.service';
 import { TodoService } from './todo.service';
 
 describe('SearchService', () => {
+  const URL: string = 'https://my-json-server.typicode.com/kagklis/todo-list/todos'
   let service: SearchService;
   let httpTestingController: HttpTestingController;
 
@@ -61,7 +62,7 @@ describe('SearchService', () => {
     service.search(ITEMS[0].title);
     service.searchResults$.subscribe();
     tick(1000); // required to bypass debounceTime()
-    const req = httpTestingController.expectOne(`api/todos?title=${ITEMS[0].title}`);
+    const req = httpTestingController.expectOne(`${URL}?title=${ITEMS[0].title}`);
 
     req.flush([ITEMS[0]]);
     expect(req.request.method).toBe('GET');
@@ -71,7 +72,7 @@ describe('SearchService', () => {
   it('should get all items on reset', fakeAsync(() => {
     service.searchResults$.subscribe();
     tick(1000); // required to bypass debounceTime()
-    const req = httpTestingController.expectOne('api/todos');
+    const req = httpTestingController.expectOne(URL);
 
     req.flush(ITEMS);
     expect(req.request.method).toBe('GET');

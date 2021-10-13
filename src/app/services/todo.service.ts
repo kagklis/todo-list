@@ -9,7 +9,7 @@ import { TodoItem } from '../model/todo-item';
 })
 export class TodoService {
 
-  private readonly TODO_ITEMS_URL: string = 'api/todos';
+  private readonly TODO_ITEMS_URL: string = 'https://my-json-server.typicode.com/kagklis/todo-list/todos';
 
   constructor(private http: HttpClient) { }
 
