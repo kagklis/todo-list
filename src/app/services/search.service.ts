@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { TodoItem } from '../model/todo-item';
 import { SpinnerService } from './spinner.service';
 import { TodoService } from './todo.service';
@@ -11,12 +11,13 @@ import { TodoService } from './todo.service';
 export class SearchService {
 
   private searchTextSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  searchText$: Observable<string> = this.searchTextSubject.asObservable();
+  readonly searchText$: Observable<string> = this.searchTextSubject.asObservable();
 
   constructor(private spinnerService: SpinnerService,
     private todoService: TodoService) { }
 
   searchResults$: Observable<TodoItem[]> = this.searchText$.pipe(
+    map((searchText: string) => searchText.trim()),
     debounceTime(750),
     distinctUntilChanged(),
     tap(() => this.spinnerService.loading()),
