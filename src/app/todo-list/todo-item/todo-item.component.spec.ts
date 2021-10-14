@@ -107,7 +107,7 @@ describe('TodoItemComponent', () => {
     expect(mockTodoService.updateTodoItem).toHaveBeenCalledTimes(0);
   });
 
-  it('should emit a deleteItem event', () => {
+  it('should emit a delete event', () => {
     spyOn(component.delete, 'emit');
     component.item = { id: 1, title: 'Sample to-do item.', completed: false, editing: false };
     fixture.detectChanges();
