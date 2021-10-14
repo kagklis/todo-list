@@ -14,13 +14,13 @@ export class TodoItemComponent implements OnInit {
   item!: TodoItem;
 
   @Output()
-  deleteItem = new EventEmitter<number>();
+  delete = new EventEmitter();
 
   @Output()
-  completeEdit = new EventEmitter<TodoItem>();
+  completeEdit = new EventEmitter();
 
   @Output()
-  cancelEdit = new EventEmitter<number>();
+  cancelEdit = new EventEmitter();
 
   tempTitle!: string;
 
@@ -42,24 +42,24 @@ export class TodoItemComponent implements OnInit {
     }
   }
 
-  deleteTodoItem(id: number) {
-    this.deleteItem.emit(id);
+  deleteItem() {
+    this.delete.emit();
   }
 
-  startItemEdit(item: TodoItem): void {
-    item.editing = true;
+  startItemEdit(): void {
+    this.item.editing = true;
   }
 
-  completeItemEdit(item: TodoItem): void {
-    item.title = this.tempTitle;
-    item.editing = false;
-    this.completeEdit.emit(item);
+  completeItemEdit(): void {
+    this.item.title = this.tempTitle;
+    this.item.editing = false;
+    this.completeEdit.emit();
   }
 
-  cancelItemEdit(item: TodoItem) {
-    this.tempTitle = item.title;
-    item.editing = false;
-    this.cancelEdit.emit(item.id);
+  cancelItemEdit() {
+    this.tempTitle = this.item.title;
+    this.item.editing = false;
+    this.cancelEdit.emit();
   }
 
 }

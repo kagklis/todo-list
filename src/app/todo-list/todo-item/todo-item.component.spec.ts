@@ -91,7 +91,7 @@ describe('TodoItemComponent', () => {
     fixture.detectChanges();
 
     expect(checkboxDebugElement.componentInstance.checked).toBeTrue();
-    expect(mockTodoService.updateTodoItem).toHaveBeenCalledWith(component.item);
+    expect(mockTodoService.updateTodoItem).toHaveBeenCalledTimes(1);
   });
 
   it('should not update new item when checkbox is toggled', () => {
@@ -108,7 +108,7 @@ describe('TodoItemComponent', () => {
   });
 
   it('should emit a deleteItem event', () => {
-    spyOn(component.deleteItem, 'emit');
+    spyOn(component.delete, 'emit');
     component.item = { id: 1, title: 'Sample to-do item.', completed: false, editing: false };
     fixture.detectChanges();
     const deleteButton: HTMLElement = de.queryAll(By.css('button'))[1].nativeElement;
@@ -116,7 +116,7 @@ describe('TodoItemComponent', () => {
     deleteButton.click();
     fixture.detectChanges();
 
-    expect(component.deleteItem.emit).toHaveBeenCalledOnceWith(component.item.id);
+    expect(component.delete.emit).toHaveBeenCalledTimes(1);
   });
 
   it('should enter edit mode', () => {
@@ -184,7 +184,7 @@ describe('TodoItemComponent', () => {
       cancelButton.click();
       fixture.detectChanges();
 
-      expect(component.cancelEdit.emit).toHaveBeenCalledWith(component.item.id);
+      expect(component.cancelEdit.emit).toHaveBeenCalledTimes(1);
     });
 
     it('should exit edit mode', () => {

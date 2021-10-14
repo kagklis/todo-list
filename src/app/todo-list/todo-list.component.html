@@ -21,8 +21,8 @@
 
   <div *ngIf="!(isLoading$ | async)">
     <div *ngIf="pagedTodoList.length" class="todo-list-container">
-      <app-todo-item *ngFor="let item of pagedTodoList.pageData; trackBy: trackByItems" [item]="item" (deleteItem)="deleteItem($event)"
-        (completeEdit)="completeEdit($event)" (cancelEdit)="cancelEdit($event)"></app-todo-item>
+      <app-todo-item *ngFor="let item of pagedTodoList.pageData; trackBy: trackByItems" [item]="item" (delete)="delete(item)"
+        (completeEdit)="completeEdit(item)" (cancelEdit)="cancelEdit(item)"></app-todo-item>
     </div>
     <div *ngIf="!pagedTodoList.length" class="nothing-found-container">
       <div class="container">

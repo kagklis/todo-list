@@ -53,20 +53,20 @@ export class TodoListComponent implements OnInit, OnDestroy {
     });
   }
 
-  cancelEdit(id: number) {
-    if (id === 0) {
-      this.pagedTodoList.removeItemById(id);
+  cancelEdit(item: TodoItem) {
+    if (item.id === 0) {
+      this.pagedTodoList.removeItemById(item.id);
     }
   }
 
-  deleteItem(id: number) {
-    if (id === 0) {
-      this.pagedTodoList.removeItemById(id);
+  delete(item: TodoItem) {
+    if (item.id === 0) {
+      this.pagedTodoList.removeItemById(item.id);
       return;
     }
     this.spinnerService.loading();
-    this.todoService.deleteTodoItem(id).subscribe(() => {
-      this.pagedTodoList.removeItemById(id);
+    this.todoService.deleteTodoItem(item.id).subscribe(() => {
+      this.pagedTodoList.removeItemById(item.id);
       this.spinnerService.complete();
     });
   }
