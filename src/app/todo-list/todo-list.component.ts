@@ -4,8 +4,9 @@ import { iif, Observable, Subscription } from 'rxjs';
 import { PagedTodoList } from '../model/paged-todo-list';
 import { TodoItem } from '../model/todo-item';
 import { SearchService } from '../services/search.service';
-import { SpinnerService } from '../services/spinner.service';
+import { LoadingService } from '../services/loading.service';
 import { TodoService } from '../services/todo.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-todo-list',
@@ -17,20 +18,22 @@ export class TodoListComponent implements OnInit, OnDestroy {
   pagedTodoList: PagedTodoList = new PagedTodoList();
   searchText$: Observable<string>;
   isLoading$: Observable<boolean>;
+  isItemLoading$: Observable<number>;
   sub!: Subscription;
 
-  constructor(private spinnerService: SpinnerService,
+  constructor(private loadingService: LoadingService,
     private searchService: SearchService,
     private todoService: TodoService) {
     this.searchText$ = this.searchService.searchText$;
-    this.isLoading$ = this.spinnerService.isLoading$;
+    this.isLoading$ = this.loadingService.isLoading$;
+    this.isItemLoading$ = this.loadingService.itemIsLoading$;
   }
 
   ngOnInit(): void {
-    this.spinnerService.loading();
+    this.loadingService.loading();
     this.sub = this.searchService.searchResults$.subscribe((items: TodoItem[]) => {
       this.pagedTodoList = new PagedTodoList(items);
-      this.spinnerService.complete();
+      this.loadingService.complete();
     });
   }
 
@@ -43,13 +46,13 @@ export class TodoListComponent implements OnInit, OnDestroy {
   }
 
   completeEdit(item: TodoItem) {
-    this.spinnerService.loading();
+    this.loadingService.itemLoading(item.id);
     iif(() => item.id === 0,
       this.todoService.createTodoItem(item),
       this.todoService.updateTodoItem(item)
     ).subscribe((savedItem: TodoItem) => {
       this.pagedTodoList.replaceItem(item, savedItem);
-      this.spinnerService.complete();
+      this.loadingService.itemComplete();
     });
   }
 
@@ -64,10 +67,10 @@ export class TodoListComponent implements OnInit, OnDestroy {
       this.pagedTodoList.removeItemById(item.id);
       return;
     }
-    this.spinnerService.loading();
+    this.loadingService.itemLoading(item.id);
     this.todoService.deleteTodoItem(item.id).subscribe(() => {
       this.pagedTodoList.removeItemById(item.id);
-      this.spinnerService.complete();
+      this.loadingService.itemComplete();
     });
   }
 
@@ -85,12 +88,14 @@ export class TodoListComponent implements OnInit, OnDestroy {
     this.pagedTodoList.goToPage(event.pageIndex);
   }
 
-  generateFakeItems(count: number): Array<number> {
-    const indexes = [];
-    for (let i = 0; i < count; i++) {
-      indexes.push(i);
-    }
-    return indexes;
+  generateFakeItems(count: number) {
+    return [...Array(count).keys()];
+  }
+
+  isItemLoading(item: TodoItem): Observable<boolean> {
+    return this.isItemLoading$.pipe(
+      map(id => (id < 0) || (id != item.id))
+    );
   }
 
 }

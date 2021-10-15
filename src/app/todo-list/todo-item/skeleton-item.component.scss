@@ -1,0 +1,13 @@
+@import "./todo-item.component.scss";
+
+.skeleton-item {
+  @extend .todo-item;
+  height: 40px;
+}
+
+.skeleton-actions {
+  @extend .todo-actions;
+  ngx-skeleton-loader {
+    height: 50px;
+  }
+}

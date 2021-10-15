@@ -6,9 +6,11 @@ import { TodoItemComponent } from './todo-item/todo-item.component';
 
 import { SharedModule } from '../shared/shared.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { SkeletonItemComponent } from './todo-item/skeleton-item.component';
 
 @NgModule({
   declarations: [
+    SkeletonItemComponent,
     TodoItemComponent,
     TodoListComponent
   ],

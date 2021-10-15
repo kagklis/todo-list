@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { TodoItem } from '../model/todo-item';
 import { SearchService } from '../services/search.service';
-import { SpinnerService } from '../services/spinner.service';
+import { LoadingService } from '../services/loading.service';
 import { TodoService } from '../services/todo.service';
 import { SharedModule } from '../shared/shared.module';
 import { TodoItemComponent } from './todo-item/todo-item.component';
@@ -22,7 +22,7 @@ describe('TodoListComponent', () => {
   const ITEMS: TodoItem[] = [
     { id: 1, title: "Walk the dog.", completed: true, editing: false },
     { id: 2, title: "Go to the supermarket.", completed: false, editing: false },
-    { id: 3, title: "Do the dishes.", completed: true, editing: false }
+    { id: 3, title: "Do the dishes.", completed: true, editing: true }
   ];
 
   beforeEach(async () => {
@@ -41,7 +41,7 @@ describe('TodoListComponent', () => {
       providers: [
         { provide: SearchService, useValue: mockSearchService },
         { provide: TodoService, useValue: mockTodoService },
-        SpinnerService
+        LoadingService
       ],
       declarations: [
         TodoItemComponent,
@@ -132,12 +132,11 @@ describe('TodoListComponent', () => {
 
     it('should update item when an existing item\'s check button is pressed', fakeAsync(() => {
       const todoItemComponents = de.queryAll(By.directive(TodoItemComponent));
-      startEdit(todoItemComponents[0]);
 
-      completeEdit(todoItemComponents[0]);
+      completeEdit(todoItemComponents[2]);
 
       expect(component.pagedTodoList.length).toBe(ITEMS.length);
-      expect(mockTodoService.updateTodoItem).toHaveBeenCalledOnceWith(ITEMS[0]);
+      expect(mockTodoService.updateTodoItem).toHaveBeenCalledOnceWith(ITEMS[2]);
     }));
 
     it('should enter edit mode when an edit button is pressed', fakeAsync(() => {
