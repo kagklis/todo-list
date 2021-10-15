@@ -45,6 +45,26 @@ describe('TodoService', () => {
     httpTestingController.verify();
   });
 
+  it('should update with the correct URL', () => {
+    service.updateTodoItem(TEST_ITEM).subscribe();
+
+    const req = httpTestingController.expectOne(`${URL}/${TEST_ITEM.id}`);
+
+    req.flush({ ...TEST_ITEM });
+    expect(req.request.method).toBe('PUT');
+    httpTestingController.verify();
+  });
+
+  it('should patch with the correct URL', () => {
+    service.patchTodoItem(TEST_ITEM).subscribe();
+
+    const req = httpTestingController.expectOne(`${URL}/${TEST_ITEM.id}`);
+
+    req.flush({ ...TEST_ITEM });
+    expect(req.request.method).toBe('PATCH');
+    httpTestingController.verify();
+  });
+
   it('should delete with the correct URL', () => {
     service.deleteTodoItem(TEST_ITEM.id).subscribe();
 
