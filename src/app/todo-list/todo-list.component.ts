@@ -85,4 +85,12 @@ export class TodoListComponent implements OnInit, OnDestroy {
     this.pagedTodoList.goToPage(event.pageIndex);
   }
 
+  generateFakeItems(count: number): Array<number> {
+    const indexes = [];
+    for (let i = 0; i < count; i++) {
+      indexes.push(i);
+    }
+    return indexes;
+  }
+
 }

@@ -18,11 +18,10 @@
       </button>
     </div>
   </div>
-
-  <div *ngIf="!(isLoading$ | async)">
+  <ng-container *ngIf="!(isLoading$ | async); else elseTemplate">
     <div *ngIf="pagedTodoList.length" class="todo-list-container">
-      <app-todo-item *ngFor="let item of pagedTodoList.pageData; trackBy: trackByItems" [item]="item" (delete)="delete(item)"
-        (completeEdit)="completeEdit(item)" (cancelEdit)="cancelEdit(item)"></app-todo-item>
+      <app-todo-item *ngFor="let item of pagedTodoList.pageData; trackBy: trackByItems" [item]="item"
+        (delete)="delete(item)" (completeEdit)="completeEdit(item)" (cancelEdit)="cancelEdit(item)"></app-todo-item>
     </div>
     <div *ngIf="!pagedTodoList.length" class="nothing-found-container">
       <div class="container">
@@ -30,11 +29,28 @@
         <p class="title">Nothing Found!</p>
       </div>
     </div>
-  </div>
-  <div *ngIf="(isLoading$ | async)" class="spinner-container">
-    <mat-spinner strokeWidth="3" [diameter]="120" class="spinner"></mat-spinner>
-  </div>
-  <mat-paginator *ngIf="pagedTodoList.pageData" #paginator [length]="pagedTodoList.length" [pageSize]="pagedTodoList.pageSize" [pageIndex]="pagedTodoList.currentPage"
-    (page)="pageChanged($event)" showFirstLastButtons="true">
+  </ng-container>
+  <ng-template #elseTemplate>
+    <div class="todo-list-container">
+      <div class="todo-item" *ngFor="let item of generateFakeItems(6)">
+        <ngx-skeleton-loader class="todo-checkbox-edit" appearance="circle"
+          [theme]="{ 'border-radius': '0px', width: '16px', height: '16px', margin: 'auto'}">
+        </ngx-skeleton-loader>
+        <div class="todo-input-container">
+          <ngx-skeleton-loader class="todo-input" [theme]="{ margin: 'auto', height: '19px'}"></ngx-skeleton-loader>
+        </div>
+        <div class="todo-actions-container">
+          <div class="todo-actions">
+            <ngx-skeleton-loader appearance="circle"></ngx-skeleton-loader>
+            <ngx-skeleton-loader appearance="circle"></ngx-skeleton-loader>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <mat-paginator *ngIf="pagedTodoList.pageData" #paginator [length]="pagedTodoList.length"
+    [pageSize]="pagedTodoList.pageSize" [pageIndex]="pagedTodoList.currentPage" (page)="pageChanged($event)"
+    showFirstLastButtons="true">
   </mat-paginator>
 </div>

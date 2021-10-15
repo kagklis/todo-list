@@ -1,4 +1,5 @@
 @import "../../css/responsive-breakpoints.scss";
+@import "../../css/variables.scss";
 
 .title {
   margin: 0;
@@ -71,4 +72,55 @@
 mat-paginator {
   background: transparent;
   position: relative;
+}
+
+// CSS FOR SKELETON LAYOUT LIST
+.todo-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  border: 1px solid $borders-dividers;
+  padding: 8px;
+  margin: 5px;
+  border-radius: 5px;
+  background: white;
+  height: 40px;
+}
+
+.todo-actions-container {
+  min-width: 30%;
+  @include xs-screen {
+    min-width: 35%;
+  }
+}
+
+.todo-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+
+  ngx-skeleton-loader {
+    height: 50px;
+  }
+}
+
+.todo-checkbox-edit {
+  display: flex;
+  min-width: 10%;
+}
+
+.todo-input-container {
+  min-width: 55%;
+  margin-right: 5%;
+  @include xs-screen {
+    min-width: 50%;
+  }
+}
+
+.todo-input {
+  display: flex;
+  width: 100%;
 }

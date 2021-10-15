@@ -5,7 +5,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
@@ -17,7 +16,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatButtonModule,
     MatInputModule,
     MatAutocompleteModule,
-    MatProgressSpinnerModule,
     MatPaginatorModule
   ]
 })

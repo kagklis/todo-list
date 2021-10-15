@@ -5,6 +5,7 @@ import { TodoListComponent } from './todo-list.component';
 import { TodoItemComponent } from './todo-item/todo-item.component';
 
 import { SharedModule } from '../shared/shared.module';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import { SharedModule } from '../shared/shared.module';
     TodoListComponent
   ],
   imports: [
+    NgxSkeletonLoaderModule,
     AutofocusFixModule.forRoot(),
     SharedModule
   ],
