@@ -88,7 +88,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
     this.pagedTodoList.goToPage(event.pageIndex);
   }
 
-  generateFakeItems(count: number) {
+  generateSkeletonItems(count: number) {
     return [...Array(count).keys()];
   }
 
