@@ -7,6 +7,7 @@ import { SearchService } from '../services/search.service';
 import { LoadingService } from '../services/loading.service';
 import { TodoService } from '../services/todo.service';
 import { map } from 'rxjs/operators';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-todo-list',
@@ -96,6 +97,10 @@ export class TodoListComponent implements OnInit, OnDestroy {
     return this.isItemLoading$.pipe(
       map(id => (id < 0) || (id != item.id))
     );
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.pagedTodoList.pageData, event.previousIndex, event.currentIndex);
   }
 
 }

@@ -19,9 +19,9 @@
     </div>
   </div>
   <ng-container *ngIf="!(isLoading$ | async); else elseTemplate">
-    <div *ngIf="pagedTodoList.length" class="todo-list-container">
+    <div *ngIf="pagedTodoList.length" class="todo-list-container" cdkDropList (cdkDropListDropped)="drop($event)">
       <ng-container *ngFor="let item of pagedTodoList.pageData; trackBy: trackByItems">
-        <app-todo-item *ngIf="(isItemLoading(item) | async); else skeletonItem" [item]="item" (delete)="delete(item)"
+        <app-todo-item cdkDrag *ngIf="(isItemLoading(item) | async); else skeletonItem" [item]="item" (delete)="delete(item)"
           (completeEdit)="completeEdit(item)" (cancelEdit)="cancelEdit(item)">
         </app-todo-item>
       </ng-container>

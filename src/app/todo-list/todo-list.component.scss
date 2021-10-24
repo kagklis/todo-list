@@ -73,3 +73,11 @@ mat-paginator {
   background: transparent;
   position: relative;
 }
+
+.cdk-drag-placeholder {
+  opacity: 0.3;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

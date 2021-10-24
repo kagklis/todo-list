@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [],
@@ -16,7 +17,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatButtonModule,
     MatInputModule,
     MatAutocompleteModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    DragDropModule
   ]
 })
 export class MaterialModule { }
