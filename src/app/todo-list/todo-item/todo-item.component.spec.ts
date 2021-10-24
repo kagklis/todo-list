@@ -107,6 +107,17 @@ describe('TodoItemComponent', () => {
     expect(mockTodoService.updateTodoItem).toHaveBeenCalledTimes(0);
   });
 
+  it('should not update new item when checkbox is toggled', () => {
+    const item = { id: 0, title: 'Sample to-do item.', completed: false };
+    component.item = { ...item };
+    fixture.detectChanges();
+
+    component.toggle();
+
+    expect(component.item.completed).toBe(!item.completed);
+    expect(mockTodoService.updateTodoItem).toHaveBeenCalledTimes(0);
+  });
+
   it('should emit a delete event', () => {
     spyOn(component.delete, 'emit');
     component.item = { id: 1, title: 'Sample to-do item.', completed: false, editing: false };

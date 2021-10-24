@@ -30,10 +30,10 @@ export class TodoItemComponent implements OnInit {
     this.tempTitle = this.item.title;
   }
 
-  toggle(item: TodoItem): void {
-    item.completed = !item.completed;
-    if (item.id === 0) return;
-    this.todoService.updateTodoItem(item).subscribe();
+  toggle(): void {
+    this.item.completed = !this.item.completed;
+    if (this.item.id === 0) return;
+    this.todoService.updateTodoItem(this.item).subscribe();
   }
 
   onTitleChange() {

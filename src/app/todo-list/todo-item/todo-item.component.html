@@ -1,6 +1,6 @@
 <div class="todo-item">
 
-  <mat-checkbox [checked]="item.completed" (change)="toggle(item)"
+  <mat-checkbox [checked]="item.completed" (change)="toggle()"
     [ngClass]="!item.editing ? 'todo-checkbox' : 'todo-checkbox-edit'">
     <mat-label *ngIf="!item.editing" class="todo-label" [ngClass]="{ 'completed' : item.completed }">{{ item.title }}
     </mat-label>
