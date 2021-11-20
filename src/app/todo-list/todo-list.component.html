@@ -1,49 +1,73 @@
 <div class="container">
-  <div class="pad-top">
-    <h1 class="title">TO-DO LIST</h1>
-    <div class="todo-list-controls">
-      <mat-form-field class="search-field" appearance="outline">
-        <input #search matInput type="text" placeholder="Search by title" [ngModel]="searchText$ | async"
-          (ngModelChange)="searchTextChanged($event)" />
+   <div class="pad-top">
+      <h1 class="title">TO-DO LIST</h1>
+      <div class="todo-list-controls">
+         <mat-form-field class="search-field" appearance="outline">
+            <input
+               #search
+               matInput
+               type="text"
+               placeholder="Search by title"
+               [ngModel]="searchText$ | async"
+               (ngModelChange)="searchTextChanged($event)"
+            />
 
-        <div class="search-controls">
-          <button mat-button matSuffix mat-icon-button [disabled]="!search.value" class="reset-button"
-            (click)="resetSearch()">
-            <mat-icon>close</mat-icon>
-          </button>
-        </div>
-      </mat-form-field>
-      <button mat-fab (click)="addTodoItem()" color="primary">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
-  </div>
-  <ng-container *ngIf="!(isLoading$ | async); else elseTemplate">
-    <div *ngIf="pagedTodoList.length" class="todo-list-container" cdkDropList (cdkDropListDropped)="drop($event)">
-      <ng-container *ngFor="let item of pagedTodoList.pageData; trackBy: trackByItems">
-        <app-todo-item cdkDrag *ngIf="(isItemLoading(item) | async); else skeletonItem" [item]="item" (delete)="delete(item)"
-          (completeEdit)="completeEdit(item)" (cancelEdit)="cancelEdit(item)">
-        </app-todo-item>
-      </ng-container>
-      <ng-template #skeletonItem>
-        <app-skeleton-item></app-skeleton-item>
-      </ng-template>
-    </div>
-    <div *ngIf="!pagedTodoList.length" class="nothing-found-container">
-      <div class="container">
-        <mat-icon class="not-found-icon" aria-hidden="false">search_off</mat-icon>
-        <p class="title">Nothing Found!</p>
+            <div class="search-controls">
+               <button
+                  mat-button
+                  matSuffix
+                  mat-icon-button
+                  [disabled]="!search.value"
+                  class="reset-button"
+                  (click)="resetSearch()"
+               >
+                  <mat-icon>close</mat-icon>
+               </button>
+            </div>
+         </mat-form-field>
+         <button
+            mat-fab
+            color="primary"
+            (click)="addTodoItem()"
+         >
+            <mat-icon>add</mat-icon>
+         </button>
       </div>
-    </div>
-  </ng-container>
-  <ng-template #elseTemplate>
-    <div class="todo-list-container">
-      <app-skeleton-item *ngFor="let item of generateSkeletonItems(6)"></app-skeleton-item>
-    </div>
-  </ng-template>
-
-  <mat-paginator *ngIf="pagedTodoList.pageData" #paginator [length]="pagedTodoList.length"
-    [pageSize]="pagedTodoList.pageSize" [pageIndex]="pagedTodoList.currentPage" (page)="pageChanged($event)"
-    showFirstLastButtons="true">
-  </mat-paginator>
+   </div>
+   <ng-container *ngIf="!(isLoading$ | async); else elseTemplate">
+      <cdk-virtual-scroll-viewport
+         itemSize="82"
+         *ngIf="todoList.length"
+         class="todo-list-container"
+         cdkDropList
+         [cdkDropListData]="todoList.items"
+         (cdkDropListDropped)="drop($event)"
+      >
+         <ng-container *ngFor="let item of todoList.items; trackBy: trackByItems">
+            <app-todo-item
+               *ngIf="(isItemLoading(item) | async); else skeletonItem"
+               cdkDrag
+               [cdkDragData]="item"
+               [item]="item"
+               (delete)="delete(item)"
+               (completeEdit)="completeEdit(item)"
+               (cancelEdit)="cancelEdit(item)"
+            ></app-todo-item>
+         </ng-container>
+         <ng-template #skeletonItem>
+            <app-skeleton-item></app-skeleton-item>
+         </ng-template>
+      </cdk-virtual-scroll-viewport>
+      <div *ngIf="!todoList.length" class="nothing-found-container">
+         <div class="container">
+            <mat-icon class="not-found-icon" aria-hidden="false">search_off</mat-icon>
+            <p class="title">Nothing Found!</p>
+         </div>
+      </div>
+   </ng-container>
+   <ng-template #elseTemplate>
+      <div class="todo-list-container">
+         <app-skeleton-item *ngFor="let item of generateSkeletonItems(6)"></app-skeleton-item>
+      </div>
+   </ng-template>
 </div>

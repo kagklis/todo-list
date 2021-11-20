@@ -121,7 +121,7 @@ describe('TodoListComponent', () => {
     deleteItem(todoItemComponents[0]);
 
     expect(de.queryAll(By.directive(TodoItemComponent)).length).toBe(ITEMS.length - 1);
-    expect(component.pagedTodoList.length).toBe(ITEMS.length - 1);
+    expect(component.todoList.length).toBe(ITEMS.length - 1);
   }));
 
   describe('when item is existing one', () => {
@@ -135,17 +135,17 @@ describe('TodoListComponent', () => {
 
       completeEdit(todoItemComponents[2]);
 
-      expect(component.pagedTodoList.length).toBe(ITEMS.length);
+      expect(component.todoList.length).toBe(ITEMS.length);
       expect(mockTodoService.updateTodoItem).toHaveBeenCalledOnceWith(ITEMS[2]);
     }));
 
     it('should enter edit mode when an edit button is pressed', fakeAsync(() => {
       const todoItemComponents = de.queryAll(By.directive(TodoItemComponent));
-      expect(fixture.componentInstance.pagedTodoList.pageData[0].editing).toBeFalsy();
+      expect(fixture.componentInstance.todoList.items[0].editing).toBeFalsy();
 
       startEdit(todoItemComponents[0]);
 
-      expect(fixture.componentInstance.pagedTodoList.pageData[0].editing).toBeTrue();
+      expect(fixture.componentInstance.todoList.items[0].editing).toBeTrue();
     }));
 
     it('should exit edit mode when a cancel button is pressed', fakeAsync(() => {
@@ -154,7 +154,7 @@ describe('TodoListComponent', () => {
 
       cancelEdit(todoItemComponents[0]);
 
-      expect(fixture.componentInstance.pagedTodoList.pageData[0].editing).toBeFalse();
+      expect(fixture.componentInstance.todoList.items[0].editing).toBeFalse();
     }));
 
     it('should remove item by calling todoService.deleteTodoItem() on delete', fakeAsync(() => {

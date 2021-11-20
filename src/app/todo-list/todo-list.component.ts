@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
 import { iif, Observable, Subscription } from 'rxjs';
-import { PagedTodoList } from '../model/paged-todo-list';
+import { TodoList } from '../model/todo-list';
 import { TodoItem } from '../model/todo-item';
 import { SearchService } from '../services/search.service';
 import { LoadingService } from '../services/loading.service';
 import { TodoService } from '../services/todo.service';
 import { map } from 'rxjs/operators';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-todo-list',
@@ -16,7 +15,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 })
 export class TodoListComponent implements OnInit, OnDestroy {
 
-  pagedTodoList: PagedTodoList = new PagedTodoList();
+  todoList: TodoList = new TodoList();
   searchText$: Observable<string>;
   isLoading$: Observable<boolean>;
   isItemLoading$: Observable<number>;
@@ -33,7 +32,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadingService.loading();
     this.sub = this.searchService.searchResults$.subscribe((items: TodoItem[]) => {
-      this.pagedTodoList = new PagedTodoList(items);
+      this.todoList = new TodoList(items);
       this.loadingService.complete();
     });
   }
@@ -43,7 +42,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   }
 
   addTodoItem(): void {
-    this.pagedTodoList.addEmptyItem();
+    this.todoList.addEmptyItem();
   }
 
   completeEdit(item: TodoItem) {
@@ -52,25 +51,25 @@ export class TodoListComponent implements OnInit, OnDestroy {
       this.todoService.createTodoItem(item),
       this.todoService.updateTodoItem(item)
     ).subscribe((savedItem: TodoItem) => {
-      this.pagedTodoList.replaceItem(item, savedItem);
+      this.todoList.replaceItem(item, savedItem);
       this.loadingService.itemComplete();
     });
   }
 
   cancelEdit(item: TodoItem) {
     if (item.id === 0) {
-      this.pagedTodoList.removeItemById(item.id);
+      this.todoList.removeItemById(item.id);
     }
   }
 
   delete(item: TodoItem) {
     if (item.id === 0) {
-      this.pagedTodoList.removeItemById(item.id);
+      this.todoList.removeItemById(item.id);
       return;
     }
     this.loadingService.itemLoading(item.id);
     this.todoService.deleteTodoItem(item.id).subscribe(() => {
-      this.pagedTodoList.removeItemById(item.id);
+      this.todoList.removeItemById(item.id);
       this.loadingService.itemComplete();
     });
   }
@@ -85,10 +84,6 @@ export class TodoListComponent implements OnInit, OnDestroy {
 
   trackByItems(_index: number, item: TodoItem): number { return item.id; }
 
-  pageChanged(event: PageEvent) {
-    this.pagedTodoList.goToPage(event.pageIndex);
-  }
-
   generateSkeletonItems(count: number) {
     return [...Array(count).keys()];
   }
@@ -99,8 +94,8 @@ export class TodoListComponent implements OnInit, OnDestroy {
     );
   }
 
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.pagedTodoList.pageData, event.previousIndex, event.currentIndex);
+  drop(event: CdkDragDrop<TodoItem[]>) {
+    this.todoList.rearrangeAfterDragAndDrop(event);
   }
 
 }

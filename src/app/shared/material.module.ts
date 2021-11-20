@@ -5,8 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [],
@@ -17,8 +17,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatButtonModule,
     MatInputModule,
     MatAutocompleteModule,
-    MatPaginatorModule,
-    DragDropModule
+    DragDropModule,
+    ScrollingModule
   ]
 })
 export class MaterialModule { }
